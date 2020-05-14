@@ -1,40 +1,64 @@
 package model;
 
-import java.util.ArrayList;
+import java.util.Random;
+
+import threads.RaceThread;
+import ui.AlgorithmsRaceGUI;
 
 public class Control {
 	
-	private ArrayList<AL> al;
+	private AlgorithmsRaceGUI gui;
+	private Random gen;
 	
-	public Control() {
-		al = new ArrayList<AL>();
+	private AL al;
+	private ABBHandler abb;
+	private LEHandler le;
+	
+	private RaceThread alRace;
+	private RaceThread abbRace;
+	private RaceThread leRace;
+	
+	public Control(AlgorithmsRaceGUI alGUI) {
+		gui = alGUI;
+		gen = new Random(15);
+		al = new AL();
+		abb = new ABBHandler();
+		le = new LEHandler();
 	}
 	
-	public ArrayList<Long> generateNumbers(long N){
-		ArrayList<Long> numbers = new ArrayList<Long>();
-		Long num;
-		for (int i = 0; i <= N; i++) {
-			num = (long) Math.random()*(Long.MIN_VALUE-Long.MAX_VALUE)+Long.MAX_VALUE;
-			numbers.add(num);
+	
+	public void startRace(long N, String mode, String algorithm) {
+		boolean modeB = mode.equals("Iterative") ? true:false;
+		int alg = 0;
+		
+		switch(algorithm) {
+		case "Add":
+			alg = 1;
+			break;
+		case "Search":
+			alg = 2;
+			break;
+		case "Delete":
+			alg = 3;
+			break;
 		}
-		return numbers;
+		
+		alRace = new RaceThread(gui, N, gen, modeB, alg, al);
+		abbRace = new RaceThread(gui, N, gen, modeB, alg, abb);
+		leRace = new RaceThread(gui, N, gen, modeB, alg, le);
+		
+		alRace.start();
+		abbRace.start();
+		leRace.start();
+		
 	}
 	
 	
-	public void addAl(ArrayList<Long> nums) {
-		for (int i = 0; i < nums.size(); i++) {
-			al.add(new AL(nums.get(i)) );
-		}
+	public boolean raceRunning() {
+		return(alRace.isAlive() || abbRace.isAlive() || leRace.isAlive());
 	}
 	
-	public boolean searchIterAl(long n) {
-		boolean exists = false;
-		for (int i = 0; i < al.size() && !exists; i++) {
-			if(al.get(i).getN()==n) {
-				exists = true;
-			}
-		}
-		return exists;
-	}
+	
+
 
 }
