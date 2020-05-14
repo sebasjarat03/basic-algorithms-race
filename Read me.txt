@@ -1,0 +1,1 @@
+You must do the add iterative or recursive before doing the search or delete.

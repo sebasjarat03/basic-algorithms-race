@@ -20,16 +20,18 @@ public class Control {
 	
 	public Control(AlgorithmsRaceGUI alGUI) {
 		gui = alGUI;
-		gen = new Random(15);
+		
 		al = new AL();
 		abb = new ABBHandler();
 		le = new LEHandler();
 	}
 	
 	
-	public void startRace(long N, String mode, String algorithm) {
+	public void startRace(long N, String mode, String algorithm, int seed) {
 		boolean modeB = mode.equals("Iterative") ? true:false;
 		int alg = 0;
+		
+		gen = new Random(seed);
 		
 		switch(algorithm) {
 		case "Add":

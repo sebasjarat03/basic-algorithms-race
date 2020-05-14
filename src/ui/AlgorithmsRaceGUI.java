@@ -27,6 +27,7 @@ public class AlgorithmsRaceGUI {
 	
 	public AlgorithmsRaceGUI() {
 		runningRace = false;
+		
 		this.c = new Control(this);
 	}
 	
@@ -77,6 +78,7 @@ public class AlgorithmsRaceGUI {
 
     @FXML
     public void runRace(ActionEvent event) {
+    	int seed = (int) Math.random()*1000+1;
     	alResult.setText("00:00:00");
 		abbResult.setText("00:00:00");
 		leResult.setText("00:00:00");
@@ -86,7 +88,7 @@ public class AlgorithmsRaceGUI {
     		String selectedMode = selected.getText();
     		RadioButton selectedAlg = (RadioButton) algorithm.getSelectedToggle();
     		String selectedAlgorithm = selectedAlg.getText();
-    		c.startRace(N, selectedMode, selectedAlgorithm);
+    		c.startRace(N, selectedMode, selectedAlgorithm, seed);
     		runningRace = true;
     		startCircleAnim();
     		startTimekeeper();
